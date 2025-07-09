@@ -3,13 +3,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🌈 Khushi's Advanced Image Gallery</title>
+  <title> Khushi's Image Gallery</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    /* Fallback background */
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background: linear-gradient(to right, #000000, #222222); 
+      background-size: cover;
+      background-repeat: no-repeat;
+      transition: background 0.5s ease;
+    }
+  </style>
 </head>
+
 <body>
   <div id="particles-js"></div>
-  <div class="overlay-title">🌠 Khushi's Image Gallery</div>
+
+  <div class="overlay-title animated-title"> Khushi's Image Gallery</div>
+
 
   <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ Fullscreen</button>
   <button class="music-btn" id="musicBtn" onclick="toggleMusic()">🎵 Music</button>
@@ -17,36 +34,75 @@
   <div class="controls">
     <input type="file" id="upload" multiple accept="image/*">
     <select id="bgSelector">
+      <option value="">-- Choose Background --</option>
       <option value="#0f2027">Dark Blue</option>
       <option value="#2c3e50">Gray Navy</option>
       <option value="#1e272e">Black Slate</option>
       <option value="#ff6f91">Pink</option>
       <option value="#1abc9c">Turquoise</option>
-      <!-- Gradient Backgrounds -->
-<option value="linear-gradient(to right, #ff9966, #ff5e62)">Sunset</option>
-<option value="linear-gradient(to right, #667eea, #764ba2)">Purple Dream</option>
-<option value="linear-gradient(to right, #00c9ff, #92fe9d)">Cool Aqua</option>
-<option value="linear-gradient(to right, #ff7eb3, #ff758c)">Cotton Candy</option>
-<option value="linear-gradient(to right, #2c3e50, #4ca1af)">Ocean Deep</option>
-<option value="linear-gradient(to right, #f7971e, #ffd200)">Sunrise Yellow</option>
-<option value="linear-gradient(to right, #ff5f6d, #ffc371)">Warm Flame</option>
-<option value="linear-gradient(to right, #8360c3, #2ebf91)">Magic Mint</option>
-<option value="linear-gradient(to right, #de6161, #2657eb)">Fiery Sky</option>
-<option value="linear-gradient(to right, #bdc3c7, #2c3e50)">Metallic Silver</option>
 
+      <!-- Gradient Backgrounds -->
+      <option value="linear-gradient(to right, #ff9966, #ff5e62)">Sunset</option>
+      <option value="linear-gradient(to right, #667eea, #764ba2)">Purple Dream</option>
+      <option value="linear-gradient(to right, #00c9ff, #92fe9d)">Cool Aqua</option>
+      <option value="linear-gradient(to right, #ff7eb3, #ff758c)">Cotton Candy</option>
+      <option value="linear-gradient(to right, #2c3e50, #4ca1af)">Ocean Deep</option>
+      <option value="linear-gradient(to right, #f7971e, #ffd200)">Sunrise Yellow</option>
+      <option value="linear-gradient(to right, #ff5f6d, #ffc371)">Warm Flame</option>
+      <option value="linear-gradient(to right, #8360c3, #2ebf91)">Magic Mint</option>
+      <option value="linear-gradient(to right, #de6161, #2657eb)">Fiery Sky</option>
+      <option value="linear-gradient(to right, #bdc3c7, #2c3e50)">Metallic Silver</option>
     </select>
   </div>
 
   <div class="screensaver-gallery" id="gallery"></div>
+<audio id="bgMusic" loop autoplay muted>
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_1234567890abcdef.mp3" type="audio/mp3">
+  Your browser does not support the audio element.
+</audio>
 
-  <audio id="bgMusic" loop>
-    <source src="https://drive.google.com/uc?export=view&id=1z3KoIA3vO9_nZ50NHJ-_WrknGqjnfCOx.mp3" type="audio/mp3">
-  </audio>
+
 
   <div id="imageModal" class="modal" onclick="closeModal()">
     <img id="modalImg" />
   </div>
 
   <script src="script.js"></script>
+  <script>
+    // Background Selector Logic
+    const selector = document.getElementById('bgSelector');
+    const particlesBg = document.getElementById('particles-js');
+
+    selector.addEventListener('change', function () {
+      const bg = this.value;
+      if (bg) {
+        particlesBg.style.background = bg;
+      }
+    });
+
+    // Fullscreen Toggle
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // Music Toggle
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    function toggleMusic() {
+      if (bgMusic.paused) {
+        bgMusic.play();
+        musicBtn.textContent = '🎵 Music';
+      } else {
+        bgMusic.pause();
+        musicBtn.textContent = '🔇 Music Off';
+      }
+    }
+  </script>
 </body>
 </html>

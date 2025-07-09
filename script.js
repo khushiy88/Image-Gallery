@@ -1,35 +1,45 @@
+// Toggle fullscreen mode
 function toggleFullscreen() {
-  document.fullscreenElement
-    ? document.exitFullscreen()
-    : document.documentElement.requestFullscreen();
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
 }
 
+// Toggle background music
 function toggleMusic() {
   const music = document.getElementById('bgMusic');
   const btn = document.getElementById('musicBtn');
   if (music.paused) {
     music.play();
     btn.classList.add('playing');
+    btn.textContent = '🎵 Music';
   } else {
     music.pause();
     btn.classList.remove('playing');
+    btn.textContent = '🔇 Music Off';
   }
 }
 
+// Open modal with selected image
 function openModal(src) {
   const modal = document.getElementById('imageModal');
-  document.getElementById('modalImg').src = src;
+  const modalImg = document.getElementById('modalImg');
+  modalImg.src = src;
   modal.style.display = 'flex';
 }
 
+// Close the modal
 function closeModal() {
   document.getElementById('imageModal').style.display = 'none';
 }
 
-// Upload images
-document.getElementById('upload').addEventListener('change', e => {
+// Handle image uploads
+document.getElementById('upload').addEventListener('change', (e) => {
   const gallery = document.getElementById('gallery');
   const files = e.target.files;
+
   for (let file of files) {
     const reader = new FileReader();
     reader.onload = () => {
@@ -42,15 +52,19 @@ document.getElementById('upload').addEventListener('change', e => {
   }
 });
 
-// Background color selector
-document.getElementById('bgSelector').addEventListener('change', function() {
-  document.body.style.background = this.value;
+// Apply selected background color or gradient
+document.getElementById('bgSelector').addEventListener('change', function () {
+  const value = this.value;
+  const particlesBg = document.getElementById('particles-js');
+  if (value) {
+    particlesBg.style.background = value;
+  }
 });
 
-// Particles
+// Initialize particles.js
 particlesJS('particles-js', {
   particles: {
-    number: { value: 50 },
+    number: { value: 60 },
     size: { value: 3 },
     color: { value: "#ffffff" },
     line_linked: {
@@ -68,9 +82,20 @@ particlesJS('particles-js', {
   interactivity: {
     detect_on: "canvas",
     events: {
-      onhover: { enable: true, mode: "repulse" }
+      onhover: {
+        enable: true,
+        mode: "repulse"
+      }
     }
   },
   retina_detect: true
 });
-
+window.addEventListener('load', () => {
+  const music = document.getElementById('bgMusic');
+  music.volume = 0.3;
+  music.muted = false; // unmute after load
+  music.play().catch(() => {
+    console.log('Autoplay blocked; waiting for user interaction.');
+    document.body.addEventListener('click', () => music.play());
+  });
+});
